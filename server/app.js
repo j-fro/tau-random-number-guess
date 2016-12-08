@@ -25,8 +25,8 @@ app.post('/start', function(req, res) {
 });
 
 app.post('/guess', function(req, res) {
-
     console.log('Received guesses:', req.body);
+    res.send(test(req.body.guesses));
 });
 
 app.listen(port, function() {
@@ -36,6 +36,22 @@ app.listen(port, function() {
 function generateRandomNumber(maxNumber) {
     return parseInt((Math.random() * (maxNumber + 1)));
 }
+
+function test(array){
+    for (var i = 0; i < array.length; i++) {
+        if (array[i].guess < randomNumber){
+            array[i].outcome = 'low';
+        }
+        else if (array[i].guess > randomNumber){
+            array[i].outcome = 'high';
+        }
+        else{
+            array[i].outcome = 'win';
+        }
+
+        }
+        return array;
+    }
 
 
 
