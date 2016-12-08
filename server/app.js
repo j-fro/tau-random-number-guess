@@ -25,6 +25,7 @@ app.post('/start', function(req, res) {
 });
 
 app.post('/guess', function(req, res) {
+
     console.log('Received guesses:', req.body);
 });
 
