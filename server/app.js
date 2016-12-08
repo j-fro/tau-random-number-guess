@@ -37,24 +37,18 @@ function generateRandomNumber(maxNumber) {
     return parseInt((Math.random() * (maxNumber + 1)));
 }
 
-function test(array){
+function test(array) {
     for (var i = 0; i < array.length; i++) {
-        if (array[i].guess < randomNumber){
+        if (array[i].guess < randomNumber) {
             array[i].outcome = 'low';
-        }
-        else if (array[i].guess > randomNumber){
+        } else if (array[i].guess > randomNumber) {
             array[i].outcome = 'high';
-        }
-        else{
+        } else {
             array[i].outcome = 'win';
         }
-
-        }
-        return array;
     }
-
-
-
+    return array;
+}
 
 // Expose public folder
 app.use(express.static('public'));
