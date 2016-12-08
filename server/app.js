@@ -4,9 +4,9 @@ var path = require('path');
 var app = express();
 
 var port = process.env.PORT || 3003;
-// app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: false}));
 // Set up body parsing
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 
 var maxNumber;
 var randomNumber;
@@ -19,9 +19,10 @@ app.get('/', function(req, res) {
 app.post('/start', function(req, res) {
     console.log('Starting game', req.body);
     maxNumber = req.body.maxNumber;
+    console.log('maxNumber is:', maxNumber);
     randomNumber = generateRandomNumber(maxNumber);
     console.log("Random number: ", randomNumber);
-    res.send('OK');
+    res.sendStatus(200);
 });
 
 app.post('/guess', function(req, res) {
@@ -34,7 +35,7 @@ app.listen(port, function() {
 });
 
 function generateRandomNumber(maxNumber) {
-    return parseInt((Math.random() * (maxNumber + 1)));
+    return parseInt((Math.random() * (parseInt(maxNumber) + 1)));
 }
 
 function test(array) {
