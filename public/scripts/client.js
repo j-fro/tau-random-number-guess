@@ -1,5 +1,5 @@
 var maxNumberOptions = [3, 30, 300, 3000];
-var playerNumber = [0, 1, 2, 3];
+var playerNumber = [1, 2, 3];
 
 $(document).ready(function(){
     init();
@@ -13,6 +13,7 @@ function init(){
 
 function enable(){
     $('#startGameButton').on('click', clickedStart);
+    $('#submitGuessButton').on('click', clickedSubmitGuesses);
 } // end enable
 
 
@@ -46,14 +47,33 @@ function setupGuessInput(){
     console.log('in setupGuessInput');
     var outputHtml = '';
     for (var i = 0; i < playerNumber.length; i++) {
-        outputHtml += '<p>Player ' + (i+1) + '</p>';
-        outputHtml += '<input class="playerInput" data-player="' + (i+1) + '" type="number">';
+        outputHtml += '<p>Player ' + playerNumber[i] + '</p>';
+        outputHtml += '<input class="playerInput" id="player' + playerNumber[i] + '" type="number">';
     } // end for
-    console.log(outputHtml);
     $('#playerInputs').html(outputHtml);
 } // end setupGuessInput
 
-
+function clickedSubmitGuesses() {
+    console.log('clicked submit guesses');
+    var objectToSend = {
+        'guesses': []
+    };
+    for (var i = 0; i < playerNumber.length; i++) {
+        var playerGuess = { 'player': playerNumber[i] , 'guess': 0 };
+        playerGuess.guess = parseInt($('#player' + (playerNumber[i])).val());
+        objectToSend.guesses.push(playerGuess);
+    }
+    console.log(objectToSend);
+    $.ajax({
+        url: '/guess',
+        type: 'POST',
+        // contentType: 'application/json',
+        data: objectToSend,
+        success: function(response) {
+            console.log('Sucess from server: ', response);
+        }
+    });
+}
 
 
 
