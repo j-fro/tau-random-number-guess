@@ -1,12 +1,13 @@
 var maxNumberOptions = [3, 30, 300, 3000];
 var playerNumber = [1, 2, 3];
-var totalGuesses= 0;
 
 $(document).ready(function(){
     init();
 });
 
 function init(){
+    $('#gameScreen').hide();
+    $('#endScreen').hide();
     setupMaxNumberOptions();
     enable();
     setupGuessInput();
@@ -20,6 +21,8 @@ function enable(){
 
 
 function clickedStart(){
+    $('#setupScreen').hide();
+    $('#gameScreen').show();
     var maxNumber = $('#maxNumberIn').val();
     console.log('maxNumber is:', maxNumber);
     $.ajax({
@@ -65,7 +68,6 @@ function clickedSubmitGuesses() {
         playerGuess.guess = parseInt($('#player' + (playerNumber[i])).val());
         objectToSend.guesses.push(playerGuess);
     }
-    totalGuesses++;
     console.log(objectToSend);
     $.ajax({
         url: '/guess',
@@ -80,13 +82,25 @@ function clickedSubmitGuesses() {
 } // end clickedSubmitGuesses
 
 function displayResults (array){
+    $('#guessCount').text('Total Guesses made: '+array[0].guessCount);
     var outputHtml = '';
     for (var i = 0; i < array.length; i++) {
+        if (array[i].outcome === 'win'){
+            displayWinner(array[i]);
+            break;
+        }
         outputHtml = 'Previous Guess: ' + array[i].outcome;
         $('#playerResults' + array[i].player).text(outputHtml);
     } //end for
-    
 } //end displayResults
+
+function displayWinner(winnerObject){
+    console.log('in displayWinner', winnerObject);
+    $('#gameScreen').hide();
+    var outputHtml = '<h1>Player ' + winnerObject.player + ' Wins!!!</h1><h3>(winning guess: ' + winnerObject.guess + ')</h3>';
+    $('#endScreen').show();
+    $('#endScreen').html(outputHtml);
+} //end displayWinner
 
 
 

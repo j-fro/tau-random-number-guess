@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 var app = express();
+var guessesMade;
 
 var port = process.env.PORT || 3003;
 app.use(bodyParser.urlencoded({extended: true}));
@@ -10,7 +11,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 var maxNumber;
 var randomNumber;
-var guessedNumbers;
+var guessCount;
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../views/index.html'));
@@ -20,6 +21,7 @@ app.post('/start', function(req, res) {
     console.log('Starting game', req.body);
     maxNumber = req.body.maxNumber;
     console.log('maxNumber is:', maxNumber);
+    guessCount = 0;
     randomNumber = generateRandomNumber(maxNumber);
     console.log("Random number: ", randomNumber);
     res.sendStatus(200);
@@ -27,6 +29,7 @@ app.post('/start', function(req, res) {
 
 app.post('/guess', function(req, res) {
     console.log('Received guesses:', req.body);
+    guessCount++;
     res.send(test(req.body.guesses));
 });
 
@@ -40,6 +43,7 @@ function generateRandomNumber(maxNumber) {
 
 function test(array) {
     for (var i = 0; i < array.length; i++) {
+        array[i].guessCount = guessCount;
         if (parseInt(array[i].guess) < randomNumber) {
             array[i].outcome = 'low';
         } else if (parseInt(array[i].guess) > randomNumber) {
