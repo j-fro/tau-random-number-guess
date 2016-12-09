@@ -24,9 +24,14 @@ function enable() {
 
 function clickedPlayerNumber() {
     console.log("in clickedPlayerNumber");
+    $('#errorNoPlayers').text('');
     var numberOfPlayers = parseInt($('#numberOfPlayersIn').val());
     console.log("number of players", numberOfPlayers);
-    if (numberOfPlayers > 0) {
+    if (numberOfPlayers <= 0 || isNaN(numberOfPlayers) ) {
+        $('#numberOfPlayersIn').val('');
+        $('#errorNoPlayers').text('Enter a valid number of players!');
+        return;
+    } else{
         playerNumber = [];
         for (var i = 0; i < numberOfPlayers; i++) {
             playerNumber.push(i + 1);
