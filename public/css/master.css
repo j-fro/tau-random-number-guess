@@ -31,7 +31,7 @@ button {
   top: -50px;
 }
 
-#errorMessage {
+.errorMessage {
   font-size: 10px !important;
   font-weight: lighter;
   font-style: italic;
