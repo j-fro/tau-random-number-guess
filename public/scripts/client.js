@@ -1,5 +1,5 @@
 var maxNumberOptions = [3, 30, 300, 3000];
-var playerNumber = [1, 2, 3];
+var playerNumber = [];
 
 $(document).ready(function(){
     init();
@@ -14,12 +14,32 @@ function init(){
 } //end init
 
 function enable(){
-    $('#selectMaxNumberButton').on('click', clickedPlayerNumber);
+    // $('#selectMaxNumberButton').on('click', clickedPlayerNumber);
+    $('#selectMaxNumberButton').on('click', clickedContinueSetup);
     $('#startGameButton').on('click', clickedStart);
     $('#submitGuessButton').on('click', clickedSubmitGuesses);
     $('#abandonGameButton').on('click', clickedRestartGame);
     $(document).on('click', '#restartGameButton', clickedRestartGame);
+    $(document).on('click', '.add-player-button', clickedAddPlayer);
 } // end enable
+
+function clickedAddPlayer() {
+    var outputHtml = '<p>Enter player name:</p>';
+    outputHtml += '<input type="text" class="player-name">';
+    outputHtml += '<button type="button" class="add-player-button">+</button>';
+    $('.player-profiles').append(outputHtml);
+}
+
+function clickedContinueSetup() {
+    $('.player-name').each(function() {
+        playerNumber.push($(this).val());
+    });
+    maxNumberOptions = [];
+    for (var i = 1; i < 1000; i *= 10) {
+        maxNumberOptions.push(i * playerNumber.length - 1);
+    }
+    setupMaxNumberOptions();
+}
 
 function clickedPlayerNumber() {
     console.log("in clickedPlayerNumber");
@@ -129,7 +149,7 @@ function displayResults (array){
 function displayWinner(winnerObject){
     console.log('in displayWinner', winnerObject);
     $('#gameScreen').hide();
-    var outputHtml = '<h1>Player ' + winnerObject.player + ' Wins!!!</h1><h3>The winning guess: ' + winnerObject.guess + '</h3><h4>Total guesses made: ' + winnerObject.guessCount + '</h4>';
+    var outputHtml = '<h1>' + winnerObject.player + ' Wins!!!</h1><h3>The winning guess: ' + winnerObject.guess + '</h3><h4>Total guesses made: ' + winnerObject.guessCount + '</h4>';
     outputHtml += '<button type="button" id="restartGameButton">Restart Game</button>';
     $('#endScreen').show();
     $('#endScreen').html(outputHtml);
