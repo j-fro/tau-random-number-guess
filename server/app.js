@@ -64,7 +64,8 @@ function test(array) {
             array[i].outcome = 'you broke it asshole';
         }
 
-        var tempIndex = (array[i].guess / (maxNumber / 10));
+        var tempIndex = Math.abs(((randomNumber - array[i].guess) / (maxNumber / 10)));
+        console.log("Temp index for guess", tempIndex, array[i].guess);
         if (tempIndex <= 1) {
             array[i].temperature = "hot";
         } else if (tempIndex <= 3) {
