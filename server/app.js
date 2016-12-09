@@ -4,7 +4,7 @@ var path = require('path');
 var app = express();
 
 var port = process.env.PORT || 3003;
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 // Set up body parsing
 // app.use(bodyParser.json());
 
@@ -27,8 +27,7 @@ app.post('/start', function(req, res) {
 
 app.post('/guess', function(req, res) {
     console.log('Received guesses:', req.body);
-    console.log('Guesses', req.body['"guesses"']);
-    // res.send(test(req.body.guesses));
+    res.send(test(req.body.guesses));
 });
 
 app.listen(port, function() {
