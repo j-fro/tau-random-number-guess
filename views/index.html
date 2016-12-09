@@ -8,18 +8,28 @@
 </head>
 
 <body>
+    <h1>Numbah Guessorama</h1>
+    <div id="playerSetupScreen">
+        <h4>Select the number of players</h4>
+        <p class="errorMessage" id="errorNoPlayers"></p>
+        <input type="number" id="numberOfPlayersIn" value="1">
+        <button type="button" id="selectMaxNumberButton">Continue</button>
+    </div>
     <div id="setupScreen">
-        <h1>Tau Random Number Guessorama</h1>
+        <h4>Select the maximum number:</h4>
         <select id="maxNumberIn">
 
         </select>
         <button type="button" id="startGameButton">Start Game</button>
     </div>
     <div id="gameScreen">
+        <p id="maxNumber"></p>
+        <p id="guessCount"></p>
         <div id="playerInputs">
 
         </div>
         <button type="button" id="submitGuessButton">Submit Guesses</button>
+        <button type="button" id="abandonGameButton">Abandon Game</button>
     </div>
     <div id="endScreen">
     </div>
