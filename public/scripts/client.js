@@ -14,7 +14,6 @@ function init(){
 } //end init
 
 function enable(){
-    // $('#selectMaxNumberButton').on('click', clickedPlayerNumber);
     $('#selectMaxNumberButton').on('click', clickedContinueSetup);
     $('#startGameButton').on('click', clickedStart);
     $('#submitGuessButton').on('click', clickedSubmitGuesses);
@@ -31,11 +30,19 @@ function clickedAddPlayer() {
 }
 
 function clickedContinueSetup() {
+    playerNumber = [];
+    var emptyPlayerCounter = 1;
     $('.player-name').each(function() {
         playerNumber.push($(this).val());
     });
+    for (var i = 0; i < playerNumber.length; i++) {
+        if (playerNumber[i].length < 1) {
+            playerNumber[i] = (emptyPlayerCounter++);
+        }
+    }
+    $('#badNameWarning').remove();
     maxNumberOptions = [];
-    for (var i = 1; i < 1000; i *= 10) {
+    for (i = 1; i < 1000; i *= 10) {
         maxNumberOptions.push(i * playerNumber.length - 1);
     }
     setupMaxNumberOptions();
