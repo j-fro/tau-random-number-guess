@@ -99,6 +99,7 @@ function getGuesses() {
             'player': playerNumber[i],
             'guess': 0
         };
+        // Gets the current player's guess and converts to integer
         playerGuess.guess = parseInt($('#player' + (playerNumber[i])).val());
         guessesObject.guesses.push(playerGuess);
     }
@@ -113,15 +114,16 @@ function validateGuesses(guessesArray) {
     for (var i = 0; i < guessesArray.length; i++) {
         var guess = guessesArray[i].guess;
         console.log("current guess", guess);
-        $('#errorPlayer' + guessesArray[i].player).html('');
+        $playerError = $('#errorPlayer' + guessesArray[i].player);
+        $playerError.html('');
         if (isNaN(guess)) {
             valid = false;
-            $('#errorPlayer' + guessesArray[i].player).html('<p>Please Enter SOMETHING!</p>');
+            $playerError.html('<p>Please Enter SOMETHING!</p>');
         }
         console.log('maxNumber and guess:', maxNumber, guess);
         if (maxNumber < guess || guess < 0) {
             valid = false;
-            $('#errorPlayer' + guessesArray[i].player).html('<p>Please Enter something POSSIBLE! (between 0 and ' + maxNumber + ')</p>');
+            $playerError.html('<p>Please Enter something POSSIBLE! (between 0 and ' + maxNumber + ')</p>');
         }
     } // end for
     return valid;
