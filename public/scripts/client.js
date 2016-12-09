@@ -6,25 +6,45 @@ $(document).ready(function(){
 });
 
 function init(){
+    $('#setupScreen').hide();
     $('#gameScreen').hide();
     $('#endScreen').hide();
-    setupMaxNumberOptions();
     enable();
-    setupGuessInput();
+
 } //end init
 
 function enable(){
+    $('#selectMaxNumberButton').on('click', clickedPlayerNumber);
     $('#startGameButton').on('click', clickedStart);
     $('#submitGuessButton').on('click', clickedSubmitGuesses);
+    $('#abandonGameButton').on('click', clickedRestartGame);
+    $(document).on('click', '#restartGameButton', clickedRestartGame);
 } // end enable
 
-
+function clickedPlayerNumber() {
+    console.log("in clickedPlayerNumber");
+    var numberOfPlayers = parseInt($('#numberOfPlayersIn').val());
+    console.log("number of players", numberOfPlayers);
+    if (numberOfPlayers > 0) {
+        playerNumber = [];
+        for (var i = 0; i < numberOfPlayers; i++) {
+            playerNumber.push(i + 1);
+        }
+        maxNumberOptions = [];
+        for (var j = 1; j < 1000; j *= 10) {
+            maxNumberOptions.push(j * numberOfPlayers - 1);
+            console.log(j);
+        }
+    }
+    setupMaxNumberOptions();
+}
 
 function clickedStart(){
     $('#setupScreen').hide();
     $('#gameScreen').show();
     var maxNumber = $('#maxNumberIn').val();
     $('#maxNumber').text('The number will be between 0 and  ' + maxNumber);
+    setupGuessInput();
     console.log('maxNumber is:', maxNumber);
     $.ajax({
         url: '/start',
@@ -39,8 +59,19 @@ function clickedStart(){
     }); // end ajax
 } // end clickedStart
 
+function clickedRestartGame() {
+    $('#playerSetupScreen').show();
+    $('#setupScreen').hide();
+    $('#gameScreen').hide();
+    $('#endScreen').hide();
+    maxNumberOptions = [];
+    playerNumber = [];
+}
+
 function setupMaxNumberOptions(){
     console.log('in setupMaxNumberOptions');
+    $('#playerSetupScreen').hide();
+    $('#setupScreen').show();
     var outputHtml = '';
     for (var i = 0; i < maxNumberOptions.length; i++) {
         outputHtml += '<option>' + maxNumberOptions[i] + '</option>';
@@ -99,6 +130,7 @@ function displayWinner(winnerObject){
     console.log('in displayWinner', winnerObject);
     $('#gameScreen').hide();
     var outputHtml = '<h1>Player ' + winnerObject.player + ' Wins!!!</h1><h3>The winning guess: ' + winnerObject.guess + '</h3><h4>Total guesses made: ' + winnerObject.guessCount + '</h4>';
+    outputHtml += '<button type="button" id="restartGameButton">Restart Game</button>';
     $('#endScreen').show();
     $('#endScreen').html(outputHtml);
 } //end displayWinner

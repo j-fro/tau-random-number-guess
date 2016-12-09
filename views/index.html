@@ -9,8 +9,13 @@
 
 <body>
     <h1>Numbah Guessorama</h1>
+    <div id="playerSetupScreen">
+        <h4>Select the number of players</h4>
+        <input type="number" id="numberOfPlayersIn" value="1">
+        <button type="button" id="selectMaxNumberButton">Continue</button>
+    </div>
     <div id="setupScreen">
-
+        <h4>Select the maximum number:</h4>
         <select id="maxNumberIn">
 
         </select>
@@ -23,6 +28,7 @@
 
         </div>
         <button type="button" id="submitGuessButton">Submit Guesses</button>
+        <button type="button" id="abandonGameButton">Abandon Game</button>
     </div>
     <div id="endScreen">
     </div>
