@@ -1,5 +1,6 @@
 var maxNumberOptions = [3, 30, 300, 3000];
 var playerNumber = [1, 2, 3];
+var totalGuesses= 0;
 
 $(document).ready(function(){
     init();
@@ -49,6 +50,7 @@ function setupGuessInput(){
     for (var i = 0; i < playerNumber.length; i++) {
         outputHtml += '<p>Player ' + playerNumber[i] + '</p>';
         outputHtml += '<input class="playerInput" id="player' + playerNumber[i] + '" type="number">';
+        outputHtml += '<p id="playerResults' + playerNumber[i] + '"></p>';
     } // end for
     $('#playerInputs').html(outputHtml);
 } // end setupGuessInput
@@ -63,6 +65,7 @@ function clickedSubmitGuesses() {
         playerGuess.guess = parseInt($('#player' + (playerNumber[i])).val());
         objectToSend.guesses.push(playerGuess);
     }
+    totalGuesses++;
     console.log(objectToSend);
     $.ajax({
         url: '/guess',
@@ -71,9 +74,20 @@ function clickedSubmitGuesses() {
         data: objectToSend,
         success: function(response) {
             console.log('Sucess from server: ', response);
+            displayResults(response);
         }
-    });
-}
+    }); // end ajax
+} // end clickedSubmitGuesses
+
+function displayResults (array){
+    var outputHtml = '';
+    for (var i = 0; i < array.length; i++) {
+        outputHtml = 'Previous Guess: ' + array[i].outcome;
+        $('#playerResults' + array[i].player).text(outputHtml);
+    } //end for
+    
+} //end displayResults
+
 
 
 
