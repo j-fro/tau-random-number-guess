@@ -80,25 +80,26 @@ function clickedRestartGame() {
 }
 
 function clickedSubmitGuesses() {
-    /* Validates player guesses and submits guesses to the server */
-    console.log('clicked submit guesses');
-    var valid = true;
-    for (var i = 0; i < playerNumber.length; i++) {
-        var guess = parseInt($('#player' + (playerNumber[i])).val());
-        $('#errorPlayer' + playerNumber[i]).html('');
-        if (isNaN(guess)) {
-            valid = false;
-            $('#errorPlayer' + playerNumber[i]).html('<p>Please Enter SOMETHING!</p>');
+        /* Validates player guesses and submits guesses to the server */
+        console.log('clicked submit guesses');
+        var valid = true;
+        for (var i = 0; i < playerNumber.length; i++) {
+
+            var guess = parseInt($('#player' + (playerNumber[i])).val());
+            $('#errorPlayer' + playerNumber[i]).html('');
+            if (isNaN(guess)) {
+                valid = false;
+                $('#errorPlayer' + playerNumber[i]).html('<p>Please Enter SOMETHING!</p>');
+            }
+            console.log('maxNumber and guess:', maxNumber, guess);
+            if (maxNumber < guess || guess < 0) {
+                valid = false;
+                $('#errorPlayer' + playerNumber[i]).html('<p>Please Enter something POSSIBLE! (between 0 and ' + maxNumber + ')</p>');
+            }
+        } // end for
+        if (valid) {
+            submitGuesses();
         }
-        console.log('maxNumber and guess:', maxNumber, guess);
-        if (maxNumber < guess || guess < 0) {
-            valid = false;
-            $('#errorPlayer' + playerNumber[i]).html('<p>Please Enter something POSSIBLE! (between 0 and ' + maxNumber + ')</p>');
-        }
-    } // end for
-    if (valid) {
-        submitGuesses();
-    }
 } // end clickedSubmitGuesses
 
 function submitGuesses() {
@@ -127,6 +128,36 @@ function submitGuesses() {
         }
     }); // end ajax
 } // end SubmitGuesses
+
+function clickedSubmitGuesses() {
+    var guesses = getGuesses();
+    if(validateGuesses(guesses)) {
+        submitGuesses(guesses);
+    }
+}
+
+function getGuesses() {
+    var objectToSend = {
+        'guesses': []
+    };
+    for (var i = 0; i < playerNumber.length; i++) {
+        var playerGuess = {
+            'player': playerNumber[i],
+            'guess': 0
+        };
+        playerGuess.guess = parseInt($('#player' + (playerNumber[i])).val());
+        objectToSend.guesses.push(playerGuess);
+    }
+    return objectToSend;
+}
+
+function validateGuesses() {
+
+}
+
+function submitGuesses() {
+
+}
 
 function setupMaxNumberOptions() {
     /* Creates and displays select options based on the maximum numbers */
@@ -177,8 +208,6 @@ function displayWinner(winnerObject) {
     $('#endScreen').show();
     $('#endScreen').html(outputHtml);
 } //end displayWinner
-
-
 
 
 
