@@ -40,12 +40,14 @@ function generateRandomNumber(maxNumber) {
 
 function test(array) {
     for (var i = 0; i < array.length; i++) {
-        if (array[i].guess < randomNumber) {
+        if (parseInt(array[i].guess) < randomNumber) {
             array[i].outcome = 'low';
-        } else if (array[i].guess > randomNumber) {
+        } else if (parseInt(array[i].guess) > randomNumber) {
             array[i].outcome = 'high';
-        } else {
+        } else if (parseInt(array[i].guess) === randomNumber) {
             array[i].outcome = 'win';
+        } else {
+            array[i].outcome = 'you broke it asshole';
         }
     }
     return array;
