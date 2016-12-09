@@ -80,32 +80,18 @@ function clickedRestartGame() {
 }
 
 function clickedSubmitGuesses() {
-        /* Validates player guesses and submits guesses to the server */
-        console.log('clicked submit guesses');
-        var valid = true;
-        for (var i = 0; i < playerNumber.length; i++) {
+    /* Gets user guess input, validates the guesses, then submits to the server */
+    console.log("clicked submit");
+    var guessesObject = getGuesses();
+    console.log("guesses", guessesObject);
+    if(validateGuesses(guessesObject.guesses)) {
+        submitGuesses(guessesObject);
+    }
+}
 
-            var guess = parseInt($('#player' + (playerNumber[i])).val());
-            $('#errorPlayer' + playerNumber[i]).html('');
-            if (isNaN(guess)) {
-                valid = false;
-                $('#errorPlayer' + playerNumber[i]).html('<p>Please Enter SOMETHING!</p>');
-            }
-            console.log('maxNumber and guess:', maxNumber, guess);
-            if (maxNumber < guess || guess < 0) {
-                valid = false;
-                $('#errorPlayer' + playerNumber[i]).html('<p>Please Enter something POSSIBLE! (between 0 and ' + maxNumber + ')</p>');
-            }
-        } // end for
-        if (valid) {
-            submitGuesses();
-        }
-} // end clickedSubmitGuesses
-
-function submitGuesses() {
-    /* Submits guesses to the server and displays the results */
-    console.log('in submitGuesses');
-    var objectToSend = {
+function getGuesses() {
+    /* Gets user input and returns an object with an array of player guesses */
+    var guessesObject = {
         'guesses': []
     };
     for (var i = 0; i < playerNumber.length; i++) {
@@ -114,9 +100,35 @@ function submitGuesses() {
             'guess': 0
         };
         playerGuess.guess = parseInt($('#player' + (playerNumber[i])).val());
-        objectToSend.guesses.push(playerGuess);
+        guessesObject.guesses.push(playerGuess);
     }
-    console.log(objectToSend);
+    return guessesObject;
+}
+
+function validateGuesses(guessesArray) {
+    /* Validates each guess. If there are any issues with any guess, returns
+    false */
+    console.log('validating guesses');
+    var valid = true;
+    for (var i = 0; i < guessesArray.length; i++) {
+        var guess = guessesArray[i].guess;
+        console.log("current guess", guess);
+        $('#errorPlayer' + guessesArray[i].player).html('');
+        if (isNaN(guess)) {
+            valid = false;
+            $('#errorPlayer' + guessesArray[i].player).html('<p>Please Enter SOMETHING!</p>');
+        }
+        console.log('maxNumber and guess:', maxNumber, guess);
+        if (maxNumber < guess || guess < 0) {
+            valid = false;
+            $('#errorPlayer' + guessesArray[i].player).html('<p>Please Enter something POSSIBLE! (between 0 and ' + maxNumber + ')</p>');
+        }
+    } // end for
+    return valid;
+}
+
+function submitGuesses(objectToSend) {
+    /* Sends the guesses object to the server and displays the results */
     $.ajax({
         url: '/guess',
         type: 'POST',
@@ -126,37 +138,7 @@ function submitGuesses() {
             console.log('Sucess from server: ', response);
             displayResults(response);
         }
-    }); // end ajax
-} // end SubmitGuesses
-
-function clickedSubmitGuesses() {
-    var guesses = getGuesses();
-    if(validateGuesses(guesses)) {
-        submitGuesses(guesses);
-    }
-}
-
-function getGuesses() {
-    var objectToSend = {
-        'guesses': []
-    };
-    for (var i = 0; i < playerNumber.length; i++) {
-        var playerGuess = {
-            'player': playerNumber[i],
-            'guess': 0
-        };
-        playerGuess.guess = parseInt($('#player' + (playerNumber[i])).val());
-        objectToSend.guesses.push(playerGuess);
-    }
-    return objectToSend;
-}
-
-function validateGuesses() {
-
-}
-
-function submitGuesses() {
-
+    });
 }
 
 function setupMaxNumberOptions() {
