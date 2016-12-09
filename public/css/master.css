@@ -1,0 +1,39 @@
+h1 {
+  background-color: #254085;
+  color: #b1baa9 !important;
+  font-size: 50px !important;
+  text-align: center;
+}
+body {
+    margin: 0 auto;
+    text-align: center;
+}
+
+input {
+  text-align: center;
+  color: black;
+  line-height: 30px !important;
+  border: none;
+  border-radius: 10px;
+}
+
+button {
+  background-color: #8ed998;
+  color: white !important;
+  border: none;
+  border-radius: 10px;
+}
+
+#background {
+  right: 0px;
+  position: absolute;
+  z-index: -9999;
+  top: -50px;
+}
+
+#errorMessage {
+  font-size: 10px !important;
+  font-weight: lighter;
+  font-style: italic;
+  color: #9f5360 !important;
+}

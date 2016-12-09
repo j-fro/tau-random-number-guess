@@ -63,6 +63,15 @@ function test(array) {
         } else {
             array[i].outcome = 'you broke it asshole';
         }
+
+        var tempIndex = (array[i].guess / (maxNumber / 10));
+        if (tempIndex <= 1) {
+            array[i].temperature = "hot";
+        } else if (tempIndex <= 3) {
+            array[i].temperature = "cold";
+        } else {
+            array[i].temperature = "freezing";
+        }
     }
     return array;
 }

@@ -204,7 +204,7 @@ function displayResults(array) {
             displayWinner(array[i]);
             break;
         }
-        outputHtml = 'Previous Guess: ' + array[i].outcome;
+        outputHtml = 'Previous Guess: ' + array[i].outcome + ' and ' + array[i].temperature;
         $('#playerResults' + array[i].player).text(outputHtml);
     } //end for
 } //end displayResults
