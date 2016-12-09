@@ -134,7 +134,6 @@ function submitGuesses(objectToSend) {
     $.ajax({
         url: '/guess',
         type: 'POST',
-        // contentType: 'application/json',
         data: objectToSend,
         success: function(response) {
             console.log('Sucess from server: ', response);
