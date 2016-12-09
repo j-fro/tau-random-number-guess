@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var app = express();
 var guessesMade;
-var previousGuesses;
+var previousGuesses = [];
 
 var port = process.env.PORT || 3003;
 app.use(bodyParser.urlencoded({
