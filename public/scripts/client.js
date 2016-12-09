@@ -24,6 +24,7 @@ function clickedStart(){
     $('#setupScreen').hide();
     $('#gameScreen').show();
     var maxNumber = $('#maxNumberIn').val();
+    $('#maxNumber').text('The number will be between 0 and  ' + maxNumber);
     console.log('maxNumber is:', maxNumber);
     $.ajax({
         url: '/start',
@@ -97,7 +98,7 @@ function displayResults (array){
 function displayWinner(winnerObject){
     console.log('in displayWinner', winnerObject);
     $('#gameScreen').hide();
-    var outputHtml = '<h1>Player ' + winnerObject.player + ' Wins!!!</h1><h3>(winning guess: ' + winnerObject.guess + ')</h3>';
+    var outputHtml = '<h1>Player ' + winnerObject.player + ' Wins!!!</h1><h3>The winning guess: ' + winnerObject.guess + '</h3><h4>Total guesses made: ' + winnerObject.guessCount + '</h4>';
     $('#endScreen').show();
     $('#endScreen').html(outputHtml);
 } //end displayWinner
