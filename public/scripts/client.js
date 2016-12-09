@@ -11,10 +11,10 @@ function init() {
     $('#gameScreen').hide();
     $('#endScreen').hide();
     enable();
-
 } //end init
 
 function enable() {
+    /* Wires up button handlers */
     $('#selectMaxNumberButton').on('click', clickedPlayerNumber);
     $('#startGameButton').on('click', clickedStart);
     $('#submitGuessButton').on('click', clickedSubmitGuesses);
@@ -23,15 +23,16 @@ function enable() {
 } // end enable
 
 function clickedPlayerNumber() {
+    /* Sets the player variables and allowed maximums */
     console.log("in clickedPlayerNumber");
     $('#errorNoPlayers').text('');
     var numberOfPlayers = parseInt($('#numberOfPlayersIn').val());
     console.log("number of players", numberOfPlayers);
-    if (numberOfPlayers <= 0 || isNaN(numberOfPlayers) ) {
+    if (numberOfPlayers <= 0 || isNaN(numberOfPlayers)) {
         $('#numberOfPlayersIn').val('');
         $('#errorNoPlayers').text('Enter a valid number of players!');
         return;
-    } else{
+    } else {
         playerNumber = [];
         for (var i = 0; i < numberOfPlayers; i++) {
             playerNumber.push(i + 1);
@@ -46,6 +47,7 @@ function clickedPlayerNumber() {
 }
 
 function clickedStart() {
+    /* Sends the chosen maximum to the server and starts the game phase */
     $('#setupScreen').hide();
     $('#gameScreen').show();
     maxNumber = $('#maxNumberIn').val();
@@ -68,6 +70,7 @@ function clickedStart() {
 } // end clickedStart
 
 function clickedRestartGame() {
+    /* Resets the game to initial conditions */
     $('#playerSetupScreen').show();
     $('#setupScreen').hide();
     $('#gameScreen').hide();
@@ -77,6 +80,7 @@ function clickedRestartGame() {
 }
 
 function clickedSubmitGuesses() {
+    /* Validates player guesses and submits guesses to the server */
     console.log('clicked submit guesses');
     var valid = true;
     for (var i = 0; i < playerNumber.length; i++) {
@@ -87,15 +91,18 @@ function clickedSubmitGuesses() {
             $('#errorPlayer' + playerNumber[i]).html('<p>Please Enter SOMETHING!</p>');
         }
         console.log('maxNumber and guess:', maxNumber, guess);
-        if ( maxNumber < guess || guess < 0  ) {
+        if (maxNumber < guess || guess < 0) {
             valid = false;
             $('#errorPlayer' + playerNumber[i]).html('<p>Please Enter something POSSIBLE! (between 0 and ' + maxNumber + ')</p>');
         }
-    }// end for
-    if (valid){submitGuesses();}
+    } // end for
+    if (valid) {
+        submitGuesses();
+    }
 } // end clickedSubmitGuesses
 
 function submitGuesses() {
+    /* Submits guesses to the server and displays the results */
     console.log('in submitGuesses');
     var objectToSend = {
         'guesses': []
@@ -122,6 +129,7 @@ function submitGuesses() {
 } // end SubmitGuesses
 
 function setupMaxNumberOptions() {
+    /* Creates and displays select options based on the maximum numbers */
     console.log('in setupMaxNumberOptions');
     $('#playerSetupScreen').hide();
     $('#setupScreen').show();
@@ -133,6 +141,7 @@ function setupMaxNumberOptions() {
 } // setupMaxNumberOptions
 
 function setupGuessInput() {
+    /* Creates and displays guess inputs boxes for each player */
     console.log('in setupGuessInput');
     var outputHtml = '';
     for (var i = 0; i < playerNumber.length; i++) {
@@ -146,6 +155,7 @@ function setupGuessInput() {
 
 
 function displayResults(array) {
+    /* Updates the results in line based on the server response */
     $('#guessCount').text('Total Guesses made: ' + array[0].guessCount);
     var outputHtml = '';
     for (var i = 0; i < array.length; i++) {
@@ -159,6 +169,7 @@ function displayResults(array) {
 } //end displayResults
 
 function displayWinner(winnerObject) {
+    /* Shows the winner of the game */
     console.log('in displayWinner', winnerObject);
     $('#gameScreen').hide();
     var outputHtml = '<h1>Player ' + winnerObject.player + ' Wins!!!</h1><h3>The winning guess: ' + winnerObject.guess + '</h3><h4>Total guesses made: ' + winnerObject.guessCount + '</h4>';
